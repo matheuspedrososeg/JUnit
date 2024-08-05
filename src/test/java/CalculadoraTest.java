@@ -1,6 +1,6 @@
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,14 +9,17 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CalculadoraTest {
 
     // aula 9 e 10 introducao ao junit
+
+    private Calculadora calc = new Calculadora();
+
     @Test
     public void testSomar() {
-        Calculadora calc = new Calculadora();
         assertTrue(calc.soma(2, 3) == 5);
         assertEquals(5, calc.soma(2, 3));
     }
 
     // aula 11 outras assertivas
+
     @Test
     public void assertivas() {
         assertEquals("Casa", "Casa");
@@ -43,30 +46,52 @@ public class CalculadoraTest {
 
     @Test
     public void deveRetornarNumeroDecimalNaDivisao() {
-        Calculadora calc = new Calculadora();
-        float resultado = calc.dividir(10 , 3);
+        float resultado = calc.dividir(10, 3);
         assertEquals(3.3333332538604736, resultado);
         assertEquals(3.33, resultado, 0.01);
     }
 
     @Test
     public void deveRetornarZeroComNumeradorZeroNaDivisao() {
-        Calculadora calc = new Calculadora();
         float resultado = calc.dividir(0, 2);
         assertEquals(0, resultado);
     }
+
     @Test
-    public void deveLancarExcecaoQuandoDividirPorZero() {
-        System.out.println("comecou");
+    public void deveLancarExcecaoQuandoDividirPorZero_JUNIT4() {
         try {
-            float resultado = 10 / 10;
+            float resultado = 10 / 0;
             fail("Deveria ser lancado uma excecao na divisao");
         } catch (ArithmeticException e) {
             assertEquals("/ by zero", e.getMessage());
         }
-        System.out.println("terminou");
     }
 
+    @Test
+    public void deveLancarExcecaoQuandoDividirPorZero_JUNIT5() {
+        ArithmeticException exception = assertThrows(ArithmeticException.class, () -> {
+            float resultado = 10 / 0;
+        });
+        assertEquals("/ by zero", exception.getMessage());
+    }
 
+    // aula 16 befores and afters
 
-}
+    @BeforeEach
+    public void setup() {
+        System.out.println("^^");
+    }
+    @AfterEach
+    public void teardown() {
+        System.out.println("vv");
+    }
+
+    @BeforeAll
+    public static void setupAll() {
+        System.out.println("--- before all ---");
+    }
+    @AfterAll
+    public static void teardownAll() {
+        System.out.println("--- Afer all ---");
+    }
+ }
