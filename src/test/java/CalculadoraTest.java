@@ -1,4 +1,7 @@
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import javax.swing.text.html.parser.Entity;
 import java.util.ArrayList;
@@ -81,6 +84,7 @@ public class CalculadoraTest {
     public void setup() {
         System.out.println("^^");
     }
+
     @AfterEach
     public void teardown() {
         System.out.println("vv");
@@ -90,8 +94,22 @@ public class CalculadoraTest {
     public static void setupAll() {
         System.out.println("--- before all ---");
     }
+
     @AfterAll
     public static void teardownAll() {
         System.out.println("--- Afer all ---");
     }
- }
+
+    @ParameterizedTest
+    @CsvSource(value = {
+            "6, 2 , 3",
+            "6, -2, -3",
+            "10, 3, 3.3333332538604736",
+            "0, 2, 0"
+    })
+    public void deveDividirCorretamente(int num, int den, double res) {
+        float resultado = calc.dividir(num, den);
+        assertEquals(res, resultado);
+    }
+
+}

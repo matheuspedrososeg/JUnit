@@ -1,5 +1,6 @@
 package barriga.domain.builders;
 
+import barriga.domain.Conta;
 import barriga.domain.Usuario;
 
 import static java.lang.String.format;
@@ -138,6 +139,6 @@ public class BuilderMaster {
 
     public static void main(String[] args) {
         BuilderMaster master = new BuilderMaster();
-        master.gerarCodigoClasse(Usuario.class);
+        master.gerarCodigoClasse(Conta.class);
     }
 }
