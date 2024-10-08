@@ -3,11 +3,13 @@ import barriga.domain.Usuario;
 import barriga.domain.Conta;
 
     public class ContaBuilder {
-        private long ID;
+        private Long id;
         private String nome;
         private Usuario usuario;
 
-        private ContaBuilder(){}
+        private ContaBuilder(){
+
+        }
 
         public static ContaBuilder umaConta() {
             ContaBuilder builder = new ContaBuilder();
@@ -16,13 +18,13 @@ import barriga.domain.Conta;
         }
 
         private static void inicializarDadosPadroes(ContaBuilder builder) {
-            builder.ID = 1L;
-            builder.nome = "Conta Valida`";
+            builder.id = 1L;
+            builder.nome = "Conta Valida";
             builder.usuario = UsuarioBuilder.umUsuario().agora();
         }
 
-        public ContaBuilder comID(long ID) {
-            this.ID = ID;
+        public ContaBuilder comID(Long id) {
+            this.id = this.id;
             return this;
         }
 
@@ -37,7 +39,7 @@ import barriga.domain.Conta;
         }
 
         public Conta agora() {
-            return new Conta(ID, nome, usuario);
+            return new Conta(id, nome, usuario);
         }
     }
 

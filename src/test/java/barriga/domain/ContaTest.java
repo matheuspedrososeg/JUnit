@@ -6,6 +6,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import java.util.stream.Stream;
+
 import static barriga.domain.builders.ContaBuilder.umaConta;
 import static barriga.domain.builders.UsuarioBuilder.umUsuario;
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,9 +16,9 @@ public class ContaTest {
     public void deveCriarContaValida() {
         Conta conta = umaConta().agora();
         assertAll("Conta",
-                () -> assertEquals(1L, conta.id()),
-                () -> assertEquals("Conta Valida", conta.nome()),
-                () -> assertEquals(umUsuario().agora(), conta.usuario())
+                () -> assertEquals(1L, conta.getId()),
+                () -> assertEquals("Conta Valida", conta.getNome()),
+                () -> assertEquals(umUsuario().agora(), conta.getUsuario())
         );
     }
     @ParameterizedTest ( name = "{index} - {3}")
