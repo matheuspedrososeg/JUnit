@@ -1,7 +1,7 @@
 package barriga.domain.builders;
 import barriga.domain.Usuario;
 public class UsuarioBuilder {
-    private long ID;
+    private Long ID;
     private String nome;
     private String email;
     private String senha;
@@ -21,7 +21,7 @@ public class UsuarioBuilder {
         builder.senha = "123456";
     }
 
-    public UsuarioBuilder comID(long ID) {
+    public UsuarioBuilder comID(Long ID) {
         this.ID = ID;
         return this;
     }

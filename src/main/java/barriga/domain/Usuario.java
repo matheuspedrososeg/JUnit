@@ -7,12 +7,12 @@ import java.util.Objects;
 // AULA 18 DOMINIO: USUARIO.
 
 public class Usuario {
-    private final long ID;
+    private final Long ID;
     private final String nome;
     private final String email;
     private final String senha;
 
-    public Usuario(long ID, String nome, String email, String senha) {
+    public Usuario(Long ID, String nome, String email, String senha) {
         if (nome == null) throw new ValidationException("Nome é obrigatório.");
         if (senha == null) throw new ValidationException("Senha é obrigatório.");
         if (email == null) throw new ValidationException("E-mail é obrigatório.");
@@ -50,5 +50,15 @@ public class Usuario {
     @Override
     public int hashCode() {
         return Objects.hash(nome, email, senha);
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "ID=" + ID +
+                ", nome='" + nome + '\'' +
+                ", email='" + email + '\'' +
+                ", senha='" + senha + '\'' +
+                '}';
     }
 }

@@ -20,8 +20,6 @@ public class ContaTest {
                 () -> assertEquals(umUsuario().agora(), conta.usuario())
         );
     }
-
-
     @ParameterizedTest ( name = "{index} - {3}")
     @MethodSource(value = "dataProvider")
     public void deveRejeitarContaInvalida(long id, String nome, Usuario usuario, String mensagem) {
