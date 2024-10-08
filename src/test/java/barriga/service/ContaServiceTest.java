@@ -69,8 +69,10 @@ public class ContaServiceTest {
         Mockito.when(repository.salvar(contaToSave)).thenReturn(contaSalva);
         Mockito.doThrow(new Exception("Falha catastrófica")).when(event).dispatch(umaConta().agora(), ContaEvent.EventType.CREATED);
 
-        Conta savedConta = service.salvar(contaToSave);
-        Assertions.assertNotNull(savedConta.getId());
+        String mensagem = Assertions.assertThrows(Exception.class, () ->
+                service.salvar(contaToSave)).getMessage();
+
+        Assertions.assertEquals("Falha na criação da conta, tente novamente", mensagem);
 
         Mockito.verify(repository).delete(contaSalva);
     }
