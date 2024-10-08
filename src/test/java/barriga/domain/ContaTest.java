@@ -26,6 +26,8 @@ public class ContaTest {
         ValidationException ex = assertThrows(ValidationException.class,
                 () -> umaConta().comID(id).comNome(nome).comUsuario(usuario).agora());
         assertEquals(mensagem, ex.getMessage());
+
+
     }
     private static Stream<Arguments> dataProvider() {
         return Stream.of(
