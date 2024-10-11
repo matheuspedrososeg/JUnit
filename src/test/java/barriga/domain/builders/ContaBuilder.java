@@ -1,8 +1,8 @@
 package barriga.domain.builders;
-import barriga.domain.Usuario;
 import barriga.domain.Conta;
+import barriga.domain.Usuario;
 
-    public class ContaBuilder {
+public class ContaBuilder {
         private Long id;
         private String nome;
         private Usuario usuario;

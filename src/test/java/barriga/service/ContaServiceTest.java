@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import static barriga.domain.builders.ContaBuilder.umaConta;
@@ -32,11 +33,19 @@ public class ContaServiceTest {
     @Test
     public void deveSalvarPrimeiraContaComSucesso() {
         Conta contaToSave = umaConta().comID(null).agora();
-        Mockito.when(repository.salvar(contaToSave)).thenReturn(umaConta().agora());
-        Mockito.doNothing().when(event).dispatch(umaConta().agora(), ContaEvent.EventType.CREATED);
+        Conta contaInvocacao = umaConta().comID(null).comNome("Conta Valida" + LocalDateTime.now()).agora();
+
+        Mockito.when(repository.salvar(Mockito.any(Conta.class))).thenReturn(umaConta().agora());
+        try {
+            Mockito.doNothing().when(event).dispatch(umaConta().agora(), ContaEvent.EventType.CREATED);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         Conta savedConta = service.salvar(contaToSave);
         Assertions.assertNotNull(savedConta.getId());
+
+        Mockito.verify(repository).salvar(Mockito.any(Conta.class));
     }
 
     @Test
@@ -56,7 +65,7 @@ public class ContaServiceTest {
         Conta contaToSave = umaConta().comID(null).agora();
         Mockito.when(repository.obterContasPorUsuario(contaToSave.getUsuario().getID()))
                 .thenReturn(Arrays.asList(umaConta().comNome("Outra conta").agora()));
-        Mockito.when(repository.salvar(contaToSave)).thenReturn(umaConta().agora());
+        Mockito.when(repository.salvar(Mockito.any(Conta.class))).thenReturn(umaConta().agora());
 
         Conta savedConta = service.salvar(contaToSave);
         Assertions.assertNotNull(savedConta.getId());
@@ -66,8 +75,12 @@ public class ContaServiceTest {
     public void naoDeveManterContaSemEvento() {
         Conta contaToSave = umaConta().comID(null).agora();
         Conta contaSalva = umaConta().agora();
-        Mockito.when(repository.salvar(contaToSave)).thenReturn(contaSalva);
-        Mockito.doThrow(new Exception("Falha catastrófica")).when(event).dispatch(umaConta().agora(), ContaEvent.EventType.CREATED);
+        Mockito.when(repository.salvar(Mockito.any(Conta.class))).thenReturn(contaSalva);
+        try {
+            Mockito.doThrow(new Exception("Falha catastrófica")).when(event).dispatch(umaConta().agora(), ContaEvent.EventType.CREATED);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         String mensagem = Assertions.assertThrows(Exception.class, () ->
                 service.salvar(contaToSave)).getMessage();

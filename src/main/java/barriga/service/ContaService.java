@@ -5,6 +5,7 @@ import barriga.domain.exceptions.ValidationException;
 import barriga.service.external.ContaEvent;
 import barriga.service.repositories.ContaRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class ContaService {
@@ -21,8 +22,13 @@ public class ContaService {
         contas.stream().forEach(contaExistente -> {
             if (conta.getNome().equalsIgnoreCase(contaExistente.getNome())) throw new ValidationException("Usuário já possui uma conta com este nome");
         });
-        Conta contaPersistida = repository.salvar(conta);
-        event.dispatch(contaPersistida, ContaEvent.EventType.CREATED);
+        Conta contaPersistida = repository.salvar(new Conta(conta.getId(), conta.getNome() + LocalDateTime.now(), conta.getUsuario()));
+        try {
+            event.dispatch(contaPersistida, ContaEvent.EventType.CREATED);
+        } catch (Exception e) {
+            repository.delete(contaPersistida);
+            throw new RuntimeException("Falha na criação da conta, tente novamente");
+        }
         return contaPersistida;
     }
 }
