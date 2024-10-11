@@ -1,7 +1,6 @@
 package barriga.service.repositories;
 
 import barriga.domain.Conta;
-import barriga.domain.Usuario;
 
 import java.util.List;
 

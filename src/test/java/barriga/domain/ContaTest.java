@@ -32,8 +32,8 @@ public class ContaTest {
     }
     private static Stream<Arguments> dataProvider() {
         return Stream.of(
-                Arguments.of(1L, null, umUsuario().agora(), "Nome em branco."),
-                Arguments.of(1L, "Conta Valida", null, "Usuario em branco")
+                Arguments.of(1L, null, umUsuario().agora(), "Nome é obrigatório."),
+                Arguments.of(1L, "Conta Valida", null, "Usuário é obrigatório.")
         );
     }
 }

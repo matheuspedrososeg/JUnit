@@ -1,7 +1,6 @@
 package barriga.domain.builders;
 
 import barriga.domain.Conta;
-import barriga.domain.Usuario;
 
 import static java.lang.String.format;
 
