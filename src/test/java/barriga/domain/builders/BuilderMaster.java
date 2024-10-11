@@ -137,7 +137,7 @@ public class BuilderMaster {
     }
 
     public static void main(String[] args) {
-        BuilderMaster master = new BuilderMaster();
+        BuilderMasterPOJO master = new BuilderMasterPOJO();
         master.gerarCodigoClasse(Conta.class);
     }
 }

@@ -8,9 +8,7 @@ import barriga.service.repositories.ContaRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
@@ -23,29 +21,31 @@ import static barriga.domain.builders.ContaBuilder.umaConta;
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 public class ContaServiceTest {
+
+    @Captor
+    private ArgumentCaptor<Conta> contaArgumentCaptor;
     @InjectMocks
     private ContaService service;
     @Mock
     private ContaRepository repository;
-    @Mock private ContaEvent event;
+    @Mock
+    private ContaEvent event;
 
 
     @Test
-    public void deveSalvarPrimeiraContaComSucesso() {
+    public void deveSalvarPrimeiraContaComSucesso() throws Exception {
         Conta contaToSave = umaConta().comID(null).agora();
         Conta contaInvocacao = umaConta().comID(null).comNome("Conta Valida" + LocalDateTime.now()).agora();
 
         Mockito.when(repository.salvar(Mockito.any(Conta.class))).thenReturn(umaConta().agora());
-        try {
-            Mockito.doNothing().when(event).dispatch(umaConta().agora(), ContaEvent.EventType.CREATED);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        Mockito.doNothing().when(event).dispatch(umaConta().agora(), ContaEvent.EventType.CREATED);
 
         Conta savedConta = service.salvar(contaToSave);
         Assertions.assertNotNull(savedConta.getId());
 
-        Mockito.verify(repository).salvar(Mockito.any(Conta.class));
+        Mockito.verify(repository).salvar(contaArgumentCaptor.capture());
+        Assertions.assertNotNull(contaArgumentCaptor.getValue().getId());
+        Assertions.assertTrue(contaArgumentCaptor.getValue().getNome().startsWith("Conta Valida"));
     }
 
     @Test
@@ -89,4 +89,4 @@ public class ContaServiceTest {
 
         Mockito.verify(repository).delete(contaSalva);
     }
- }
+}
